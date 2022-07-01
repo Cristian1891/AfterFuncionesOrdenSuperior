@@ -82,7 +82,7 @@ const precioTotal = () =>{
     return `Total: ${suma}`
 }
 
-const serchProduts = (product) =>{
+const searchProduts = (product) =>{
     const productsFounds = products.filter(p => p.name.includes(product));
     if(productsFounds.length == 0){
         return "No existen productos que coincidan con ese nombre en la pagina";
@@ -121,7 +121,7 @@ const cupon = prompt("Ingrese su cupon de descuento").toUpperCase();
 console.table(addCupon(cupon));
 console.table(precioTotal());
 const inputProd = prompt("Ingrese el nombre del producto que desea buscar").toUpperCase();
-console.table(serchProduts(inputProd));
+console.table(searchProduts(inputProd));
 console.table(searchByMaxPrice());
 console.table(searchByMinPrice());
 
