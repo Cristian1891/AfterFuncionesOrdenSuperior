@@ -36,21 +36,31 @@ const addProductToCart = (id, quantity=1) =>{
 
 
 const delProductToCart = (id, qty=1) =>{
-    const product = cart.find(p => p.id == id);
+    const product = cart.find((p) => p.id == id);
     if(!product){
         return "El producto no existe en el carrito"
     }
 
     product.quantity -= qty;
+    
 
     if(product.quantity < 1){
-        const idx = cart.indexOf(p => p.id == id);
-        cart.splice(idx-1,1);
+        //Reemplazo indexOf() por findIndex() que me devuelve el índice del primer elemento 
+        //de un array que cumpla con la función de prueba proporcionada
+        const idx = cart.findIndex(p => p.id == id);
+        cart.splice(idx,1);
+
+
         console.log(`Producto ${product.name} eliminado del carrito`);
     }
 
-    return cart;
+    const actualizarStock = products.find((p) => p.id == id);
 
+    if(actualizarStock){
+        actualizarStock.stock += qty;
+    }
+
+    return cart;
 }
 
 
@@ -75,7 +85,7 @@ const precioTotal = () =>{
 const serchProduts = (product) =>{
     const productsFounds = products.filter(p => p.name.includes(product));
     if(productsFounds.length == 0){
-        return "El producto especificado no se encuentra en la pagina";
+        return "No existen productos que coincidan con ese nombre en la pagina";
     }
 
     return productsFounds;
@@ -83,23 +93,22 @@ const serchProduts = (product) =>{
 
 const searchByMaxPrice = () =>{
     const productsMaxPrice = products.filter(p => p.price > 100);
-    if(productsMaxPrice){
-        return productsMaxPrice.sort((a,b)=>{
-            return b.price - a.price;
-        })
+    //correccion en el if para que me retorne el mensaje en caso de no haber productos mayores a $100
+    if(productsMaxPrice.length == 0){
+        return "No hay productos con precios mayores a $100";
     }
-    return "No hay productos con precios mayores a $100";
+    return productsMaxPrice.sort((a,b) => b.price - a.price)
+    
     
 }
 
 const searchByMinPrice = () =>{
     const productsMinPrice = products.filter(p => p.price <= 100);
-    if(productsMinPrice){
-        return productsMinPrice.sort((a,b)=>{
-            return a.price - b.price;
-        })
+    //correccion en el if para que me retorne el mensaje en caso de no haber productos menores o iguales a $100
+    if(productsMinPrice.length == 0){
+        return "No hay productos con precios menores o iguales a $100";
     }
-    return "No hay productos con precios menores o iguales a $100";
+    return productsMinPrice.sort((a,b) => a.price - b.price)
 }
 
 
